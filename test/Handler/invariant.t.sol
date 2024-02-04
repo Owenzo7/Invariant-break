@@ -31,13 +31,10 @@ contract InvariantBreak is StdInvariant, Test {
     }
 
     function statefulFuzz__testInvariantBreaksHandler() public {
-        
         assert(address(alice).balance < address(registry).balance);
 
         assert(address(registry).balance > address(alice).balance);
 
         assert(registry.isRegistered(alice) == true);
-
-        
     }
 }
