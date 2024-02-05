@@ -11,6 +11,7 @@ pragma solidity ^0.8.13;
 
 contract Registry {
     error PaymentNotEnough(uint256 expected, uint256 actual);
+    
 
     uint256 public constant PRICE = 1 ether;
 
@@ -20,6 +21,8 @@ contract Registry {
         if (msg.value < PRICE) {
             revert PaymentNotEnough(PRICE, msg.value);
         }
+
+       
 
         registry[msg.sender] = true;
     }

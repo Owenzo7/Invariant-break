@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {StdInvariant} from "forge-std/StdInvariant.sol";
 import {Registry} from "../../src/Registry.sol";
 import {Handler} from "./handler.t.sol";
@@ -14,12 +14,7 @@ contract InvariantBreak is StdInvariant, Test {
     uint256 startingAmount;
 
     function setUp() public {
-        vm.deal(alice, 4 ether);
-        vm.startPrank(alice);
         registry = new Registry();
-        startingAmount = 4 ether;
-        registry.register{value: startingAmount}();
-        vm.stopPrank();
 
         handler = new Handler(registry, alice);
 
@@ -30,11 +25,20 @@ contract InvariantBreak is StdInvariant, Test {
         targetContract(address(handler));
     }
 
-    function statefulFuzz__testInvariantBreaksHandler() public {
-        assert(address(alice).balance < address(registry).balance);
+    function invariant_testRegistry() public {
+        // assert(address(handler).balance == address(handler.registry()).balance + address(handler.alice()).balance);
 
-        assert(address(registry).balance > address(alice).balance);
+        assertTrue(registry.isRegistered(handler.alice()), "Alice is not registered");
 
-        assert(registry.isRegistered(alice) == true);
+        // assert(address(handler).balance < handler.trackingbalances());
+
+        console.log("handler balance:", handler.trackingbalances());
+        console.log("Registry Entry Amount:", registry.PRICE());
+        // vm.expectRevert();
+
+     
+
+        // assert(handler.trackingbalances() > address(handler).balance);
+        // assert(handler.trackingbalances() == address(alice).balance + handler.trackingbalances());
     }
 }

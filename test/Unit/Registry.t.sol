@@ -30,4 +30,6 @@ contract RegistryTest is Test {
         assertEq(address(registry).balance, registry.PRICE(), "Unexpected registry balance");
         assertEq(aliceBalanceAfter, aliceBalanceBefore - registry.PRICE(), "Unexpected user balance");
     }
+
+    
 }
